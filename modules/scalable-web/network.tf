@@ -20,8 +20,8 @@ resource "azurerm_public_ip" "infra_ip" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
-  allocation_method = "Static"
-  sku               = "Standard"
+  allocation_method   = "Static"
+  sku                 = "Standard"
 }
 
 # Azure Load Balancer
@@ -39,19 +39,19 @@ resource "azurerm_lb" "infra_lb" {
 
 # Load Balancer Backend Pool
 resource "azurerm_lb_backend_address_pool" "infra_lb_pool" {
-  loadbalancer_id = azurerm_lb.infra_lb.id
-  name            = "infraBackendPool"
+  loadbalancer_id      = azurerm_lb.infra_lb.id
+  name                = "infraBackendPool"
 }
 
 # Load Balancer Rule that allows HTTP traffic
 resource "azurerm_lb_rule" "infra_lb_rule" {
   loadbalancer_id                = azurerm_lb.infra_lb.id
-  name                           = "HTTP"
-  protocol                       = "Tcp"
-  frontend_port                  = 80
-  backend_port                   = 80
+  name                          = "HTTP"
+  protocol                      = "Tcp"
+  frontend_port                 = 80
+  backend_port                  = 80
   frontend_ip_configuration_name = azurerm_lb.infra_lb.frontend_ip_configuration[0].name
-  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.infra_lb_pool.id]
+  backend_address_pool_ids = [azurerm_lb_backend_address_pool.infra_lb_pool.id]
 
   probe_id = azurerm_lb_probe.infra_lb_probe.id
 
@@ -59,13 +59,13 @@ resource "azurerm_lb_rule" "infra_lb_rule" {
 
 # Probe for the Load Balancer
 resource "azurerm_lb_probe" "infra_lb_probe" {
-  loadbalancer_id = azurerm_lb.infra_lb.id
-  name            = "httpProbe"
-  protocol        = "Http"
-  port            = 80
-  request_path    = "/"
-  #   interval_in_seconds = 5
-  #   number_of_probes    = 2
+  loadbalancer_id      = azurerm_lb.infra_lb.id
+  name                = "httpProbe"
+  protocol            = "Http"
+  port                = 80
+  request_path        = "/"
+#   interval_in_seconds = 5
+#   number_of_probes    = 2
 }
 
 resource "azurerm_network_security_group" "infra_nsg" {
